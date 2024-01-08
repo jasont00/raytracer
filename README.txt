@@ -1,21 +1,21 @@
-Close But Not Quite Cases: [2] x 3
-testDiffuse // shadow is a bit different
-testSpecular // highlights are not in the right positions
-testSample // highlights are not scaled, missing shadow
+Input Syntax:
 
-Fully Working Cases: [2] x 5
-testAmbient
-testBackground
-testBehind
-testIntersection
-testImgPlane
+NEAR n
+LEFT l
+RIGHT r
+BOTTOM b 
+TOP t 
+RES x y
+SPHERE name posx posy posz sclx scly sclz r g b ka kd ks kr n 
+LIGHT name posx posy posz ir ig ib
+BACK r g b
+AMBIENT ir ig ib 
+OUTPUT name
 
-Needs Work: [2] x 2
-testReflection
-testShadow
+Sphere syntax: name (string), position (posx, posy, posz), scale (sclx, scly, sclz),
+color (r, g, b), ambient (ka), diffuse (kb), specular (ks), reflectance (kr), specular exponent (n) (Phong illumination value).
 
-Freebie: [2] x 1
-testIllum
+Light syntax: name (string), position (posx, posy, posz), intensity (rgb).
 
 How to Run:
 - type the following in console
