@@ -17,6 +17,12 @@ color (r, g, b), ambient (ka), diffuse (kb), specular (ks), reflectance (kr), sp
 
 Light syntax: name (string), position (posx, posy, posz), intensity (rgb).
 
+To Do:
+- Normalize ray method with point + vector form
+- Normalize intersection method
+- Comment sections of code
+- Reflections + Shadows
+
 How to Run:
 - type the following in console
 - ./raytracer.exe ./file-directory/filename.txt

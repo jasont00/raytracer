@@ -89,11 +89,13 @@ public:
             this->direction[i] = direction[i];
 			this->point[i] = direction[i] + origin[i];
         }
+		normalize(this->direction);
     }
-	Ray(double u, double v) {	// u, v are pixel coordinates starting from top left.
+	
+	Ray(double u, double v) {	// u, v (hori, vert) are pixel coordinates starting from top left. Calculating ray through pixels.
 		point[0] = near[2] * ((2.0*u)/(double)resolution[0]-1.0);
 		point[1] = near[4] * ((2.0*v)/(double)resolution[1]-1.0);
-		point[2] = -near[0];
+		point[2] = -near[0]; // near
 
 		for (int i = 0; i < 3; i++) {
 			origin[i] = 0;
@@ -135,6 +137,8 @@ public:
 	double scale[3];						// Scale X,Y,Z
 	double color[3];						// Color R,G,B	
 	double phong[5];			// 0 Ambience, 1 diffuse, 2 specular, 3 reflection, 4 specular exponent
+
+	// Constructor
 	Sphere(const char* newName, double x, double y, double z, double i, double j, double k, double r, double g, double b, double a, double d, double s, double rf, double n)
 		{
 		position[0] = (x); position[1] = (y); position[2] = (z); scale[0] = (i); scale[1] = (j); scale[2] = (k);
@@ -298,9 +302,10 @@ private:
 	double dot(const double a[3], const double b[3]) const {
         return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
     }
+	// For reflections, to prevent weird numerical intersection errors when reusing intersection point with future rays.
 	void increment(double* point) {
 		for (int i = 0; i < 3; i++) {
-			point[i] += 0.000001;
+			point[i] *= 1.000001;
 		}
 
 	}
@@ -371,7 +376,7 @@ int main(int argc, char *argv[]) {
 	std::vector<Sphere*> spheres;
 	std::vector<Light*> lights;
 
-	/* SETUP CODE */
+	// SETUP CODE
 	if (argc != 2) {	// Check for proper usage
 		std::cout << "Use: " << argv[0] << "input.txt" << std::endl;
 		return 1;
@@ -437,7 +442,9 @@ int main(int argc, char *argv[]) {
 			std::cout << "Invalid Input Detected." << std::endl;
 		}
 	}
+	// END SETUP CODE
 
+	// RENDER CODE
 	// determines the size of each pixel. Plane is a given space, but resolution determines how that plane is split up
 	double scale = resolution[1] / resolution[0];	
 	unsigned char *pixels;
@@ -480,10 +487,12 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	// OUTPUT IMAGE
 	save_imageP6(resolution[0], resolution[1], output_name, pixels);
 	std::cout << "Image rendered.";
+	// END RENDER CODE
 
-	// Clean-up
+	// CLEAN-UP
 	for (const auto& sphere : spheres) {
 		delete sphere;
 	}
